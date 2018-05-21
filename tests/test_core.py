@@ -116,3 +116,16 @@ def test_format_date_yyy_mm_dd():
 
     # Assert
     assert date == 'TIMESTAMP("2018-05-15 00:00:00")'
+
+
+def test_add_total():
+    # Arrange
+    rows = copy.deepcopy(ROWS)
+    expected = copy.deepcopy(ROWS)
+    expected.append(["Total", "", "662617"])
+
+    # Act
+    rows_with_total = core.add_download_total(rows)
+
+    # Assert
+    assert rows_with_total == expected
