@@ -145,7 +145,6 @@ def parse_query_result(query_job, query_rows):
 
 
 def add_percentages(rows, include_sign=True):
-
     headers = rows.pop(0)
     index = headers.index('download_count')
     headers.insert(index, 'percent')
@@ -248,3 +247,23 @@ def format_json(rows, query_info, indent):
 
     separators = (',', ':') if indent is None else None
     return json.dumps(j, indent=indent, separators=separators, sort_keys=True)
+
+
+def load_json_from_file(json_file):
+    with open(json_file) as f:
+        data = json.load(f)
+
+    query_info = data['query']
+
+    rows_data = data['rows']
+
+    # Leave out percent (we'll calculate if needed)
+    # and download_count (it needs to be last)
+    headers = [key for key in rows_data[0].keys() if key not in ['percent', 'download_count']]
+    headers.append('download_count')
+
+    rows = [headers]
+    for row in rows_data:
+        rows.append([str(row[key]) for key in headers])
+
+    return query_info, rows

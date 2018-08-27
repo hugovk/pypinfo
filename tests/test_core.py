@@ -166,3 +166,36 @@ def test_add_total():
 
     # Assert
     assert rows_with_total == expected
+
+
+def test_load_json_from_file():
+    # Arrange
+    test_file = "tests/2018-07.json"
+    expected_query_info = {
+        'bytes_billed': 7242514432,
+        'bytes_processed': 7242430447,
+        'cached': False,
+        'estimated_cost': '0.04',
+    }
+    expected_rows = [
+        ['python_version', 'download_count'],
+        ['2.7', '330231255'],
+        ['3.6', '116093128'],
+        ['3.5', '45672661'],
+        ['3.4', '13996356'],
+        ['3.7', '7060224'],
+        ['2.6', '1749249'],
+        ['3.3', '145232'],
+        ['3.8', '17111'],
+        ['3.2', '11731'],
+        ['None', '9951'],
+        ['3.1', '79'],
+        ['2.8', '37'],
+    ]
+
+    # Act
+    query_info, rows = core.load_json_from_file(test_file)
+
+    # Assert
+    assert query_info == expected_query_info
+    assert rows == expected_rows
