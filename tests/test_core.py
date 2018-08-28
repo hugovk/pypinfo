@@ -168,7 +168,7 @@ def test_add_total():
     assert rows_with_total == expected
 
 
-def test_load_json_from_file():
+def test_load_json_file_python_version():
     # Arrange
     test_file = "tests/2018-07.json"
     expected_query_info = {
@@ -191,6 +191,38 @@ def test_load_json_from_file():
         ['None', '9951'],
         ['3.1', '79'],
         ['2.8', '37'],
+    ]
+
+    # Act
+    query_info, rows = core.load_json_from_file(test_file)
+
+    # Assert
+    assert query_info == expected_query_info
+    assert rows == expected_rows
+
+
+def test_load_json_file_distro_system():
+    # Arrange
+    # pypinfo --json cryptography system distro > cryptography-system-distro.json
+    test_file = "tests/cryptography-system-distro.json"
+    expected_query_info = {
+        'bytes_billed': 53529804800,
+        'bytes_processed': 53529093431,
+        'cached': False,
+        'estimated_cost': '0.25',
+    }
+    expected_rows = [
+        ['distro_name', 'system_name', 'download_count'],
+        ['Ubuntu', 'Linux', '3753805'],
+        ['None', 'Linux', '1356305'],
+        ['Debian GNU/Linux', 'Linux', '1284028'],
+        ['macOS', 'Darwin', '881647'],
+        ['Amazon Linux AMI', 'Linux', '750086'],
+        ['CentOS Linux', 'Linux', '656466'],
+        ['None', 'Windows', '460407'],
+        ['Alpine Linux', 'Linux', '272188'],
+        ['Red Hat Enterprise Linux Server', 'Linux', '119501'],
+        ['CentOS', 'Linux', '95918'],
     ]
 
     # Act
