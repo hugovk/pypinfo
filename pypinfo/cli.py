@@ -177,6 +177,10 @@ def pypinfo(
         estimated_cost = str(estimated_cost.quantize(TO_CENTS, rounding=ROUND_UP))
 
         rows = parse_query_result(query_job, query_rows)
+        if len(rows) == 1:
+            # Only headers returned
+            click.echo("No data returned")
+            return
 
         if percent:
             rows = add_percentages(rows, include_sign=not json)
